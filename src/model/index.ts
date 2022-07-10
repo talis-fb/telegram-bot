@@ -10,8 +10,7 @@ type optionsAppend = sheets_v4.Params$Resource$Spreadsheets$Values$Append
 type optionsUpdate = sheets_v4.Params$Resource$Spreadsheets$Values$Update
 type optionsGet = sheets_v4.Params$Resource$Spreadsheets$Values$Get
 
-// type IGoogleAuth = typeof google.auth.GoogleAuth
-
+// Class Singleton
 class Spreadsheet {
   private static instance: Spreadsheet
 
