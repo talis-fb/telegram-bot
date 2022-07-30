@@ -51,7 +51,6 @@ export class TransitionsSheet {
 
     const range = this.sheetName + '!A' + row + ':J' + row
     console.log(range)
-    // return
     await this.spreadsheet.update(range, {
       valueInputOption: 'RAW',
       requestBody: {
