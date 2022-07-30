@@ -7,7 +7,8 @@ const sheet = new TransitionsSheet()
 
 bot.use(PurchaseMiddleware)
 bot.on('text', async ctx => {
-  sheet.appendNewLine(ctx.state.linesMsg)
+  const dadesToSave: Array<string | number> = ctx.state.linesMsg
+  await sheet.appendNewLine(dadesToSave)
   ctx.reply('Foi')
 })
 
