@@ -12,13 +12,12 @@ type optionsGet = sheets_v4.Params$Resource$Spreadsheets$Values$Get
 
 // Class Singleton
 class Spreadsheet {
-  private static instance: Spreadsheet
+  private constructor() {}
 
+  private static instance: Spreadsheet
   private auth
   private client
   private sheet
-
-  private constructor() {}
 
   public static async setup() {
     if (!Spreadsheet.getInstance().auth) {

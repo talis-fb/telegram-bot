@@ -1,4 +1,4 @@
-import http from 'http'
+// import http from 'http'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
@@ -7,5 +7,5 @@ import { Telegraf } from 'telegraf'
 
 const app = new Telegraf(process.env.BOT_TOKEN || '')
 
-app.use(commands)
+app.use(...commands)
 app.launch()

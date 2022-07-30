@@ -23,28 +23,39 @@ describe('Funcao de formatacao de mensagem', () => {
 })
 
 describe('Middleware', () => {
-  it('Setou o valor no message correto', () => {
-    // interface IContextTest extends Omit<Partial<Context>, 'message'> {
-    // interface IContextTest extends Pick<Context, 'message' | 'state'> {
-    // interface IContextTest extends Partial<Context> {
-    interface IContextTest extends Omit<Partial<Context>, 'message'> {
-      message: {
-        text: string
-      }
+  interface IContextTest extends Omit<Partial<Context>, 'message'> {
+    message: {
+      text: string
     }
+  }
 
+  it('Setou o valor no message correto', () => {
+    const nextFn = jest.fn()
     const ctx: IContextTest = {
       message: {
         text: '12\nfoi',
       },
       state: {},
     }
-    const nextFn = jest.fn()
 
-    PurchaseMiddleware(ctx as Context, nextFn)
-
+    expect(() => PurchaseMiddleware(ctx as Context, nextFn)).not.toThrow()
     expect(ctx.state).toBeTruthy()
     expect(formatMessage(ctx.message.text)).toEqual(ctx.state.linesMsg)
     expect(nextFn).toHaveBeenCalled()
+  })
+
+  it('Respondeu e nao chamou o Next', () => {
+    const ctx: IContextTest = {
+      message: {
+        text: 'n\nfoi',
+      },
+      state: {},
+      reply: jest.fn(),
+    }
+    const nextFn = jest.fn()
+
+    expect(() => PurchaseMiddleware(ctx as Context, nextFn)).not.toThrow()
+    expect(ctx.reply).toHaveBeenCalled()
+    expect(nextFn).not.toHaveBeenCalled()
   })
 })

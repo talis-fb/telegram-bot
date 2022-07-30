@@ -20,8 +20,11 @@ export default (ctx: Context, next: () => Promise<void>) => {
   if (ctx.message) {
     const message: string = (ctx.message as any).text
     if (message) {
-      // const lines: Array<string | number> = message.split('\n')
-      ctx.state.linesMsg = formatMessage(message)
+      try {
+        ctx.state.linesMsg = formatMessage(message)
+      } catch (e) {
+        return ctx.reply(e as string)
+      }
     }
   }
   return next()
