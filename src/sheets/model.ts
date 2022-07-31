@@ -82,7 +82,7 @@ class Spreadsheet {
     }
   }
 
-  async getNumberOfRowWithFirstColumnEqual(
+  async getNumberOfRowByFirstColumn(
     id: string,
     sheetName: string
   ): Promise<number | undefined> {
@@ -96,6 +96,40 @@ class Spreadsheet {
         const index = values.findIndex(cel => cel[0] == id)
         if (index !== -1) {
           return index + 1
+        }
+      }
+    }
+  }
+
+  async getRowByFirstColumn(
+    value: string,
+    sheetName: string
+  ): Promise<any[] | undefined> {
+    const rangeIds = sheetName + '!A1:J99'
+    const listIds = await this.get(rangeIds, {})
+
+    const values = listIds.data.values
+
+    if (values) {
+      if (Array.isArray(values)) {
+        return values.find(cel => cel[0] == value)
+      }
+    }
+  }
+
+  async getRowAndNumberByFirstColumn(
+    value: string,
+    sheetName: string
+  ): Promise<[any[], number] | undefined> {
+    const rangeIds = sheetName + '!A1:J99'
+    const listIds = await this.get(rangeIds, {})
+
+    const values = listIds.data.values
+
+    if (values && Array.isArray(values)) {
+      for (let [index, cels] of values.entries()) {
+        if (cels[0] == value) {
+          return [cels, index + 1]
         }
       }
     }
