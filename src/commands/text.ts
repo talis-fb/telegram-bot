@@ -1,14 +1,25 @@
 import { Composer } from 'telegraf'
 import PurchaseMiddleware from '../middlewares/purchase'
-import { TransitionsSheet } from '../sheets/Transistions'
+import { PurchaseSheet } from '../sheets/Purchases'
+import type { INewPurchase } from '../sheets/Purchases'
 
 const bot = new Composer()
-const sheet = new TransitionsSheet()
+const sheet = new PurchaseSheet()
 
 bot.use(PurchaseMiddleware)
 bot.on('text', async ctx => {
-  const dadesToSave: Array<string | number> = ctx.state.linesMsg
-  await sheet.appendNewLine(dadesToSave)
+  const dadesToSave: [number, ...Array<string>] = ctx.state.linesMsg
+
+  const purchase: INewPurchase = {
+    value: dadesToSave[0],
+    where: dadesToSave[1],
+    category: dadesToSave[2],
+    details: dadesToSave[3],
+
+    who: ctx.from.first_name,
+  }
+
+  await sheet.addPurchase(purchase)
   ctx.reply('Foi')
 })
 
