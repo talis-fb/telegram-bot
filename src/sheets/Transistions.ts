@@ -31,7 +31,7 @@ export class TransitionsSheet {
     await this.spreadsheet.appendNewRow(this.sheetName, [
       id,
       value,
-      when.toISOString(),
+      when.toLocaleString(),
     ])
 
     return id

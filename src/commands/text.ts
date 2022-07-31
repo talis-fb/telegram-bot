@@ -13,8 +13,8 @@ bot.on('text', async ctx => {
   const purchase: INewPurchase = {
     value: dadesToSave[0],
     where: dadesToSave[1],
-    category: dadesToSave[2],
-    details: dadesToSave[3],
+    details: dadesToSave[2],
+    category: dadesToSave[3],
 
     who: ctx.from.first_name,
   }

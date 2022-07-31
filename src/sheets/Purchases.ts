@@ -30,7 +30,21 @@ export class PurchaseSheet {
   private spreadsheet: Spreadsheet = Spreadsheet.getInstance()
   private transitions = new TransitionsSheet()
 
-  private categories: string[] = []
+  private categories: string[] = [
+    '🛒 Mercado',
+    '😋 Comida',
+    '🍞 Padaria',
+    '👔 Vestuario',
+    '✨ Lazer',
+    '🏠 Casa',
+    '🩸 Saude',
+    '💔 Besteira',
+    '💻 Eletrônicos',
+    '🚌 Transporte',
+    '💸 Emprestimos',
+    '📚 Livro',
+    '🍳 Gas',
+  ]
 
   // Categories
   getCategories() {
@@ -60,7 +74,7 @@ export class PurchaseSheet {
     return [
       val.id,
       val.value,
-      val.when ? val.when.toISOString() : '',
+      val.when ? val.when.toLocaleString() : '',
       val.category,
       val.who,
       val.where,
