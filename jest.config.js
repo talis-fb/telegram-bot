@@ -7,4 +7,6 @@ module.exports = {
       isolatedModules: true,
     },
   },
+  testTimeout: 20000,
+  rootDir: 'tests',
 }

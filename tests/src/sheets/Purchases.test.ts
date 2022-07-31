@@ -1,4 +1,4 @@
-import { PurchaseSheet } from './Purchases'
+import { PurchaseSheet } from '../../../src/sheets/Purchases'
 
 describe('PURCHASE', () => {
   let purchase = new PurchaseSheet()

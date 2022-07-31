@@ -1,4 +1,6 @@
-import PurchaseMiddleware, { formatMessage } from './purchase'
+import PurchaseMiddleware, {
+  formatMessage,
+} from '../../../src/middlewares/purchase'
 import type { Context, MiddlewareFn } from 'telegraf'
 
 describe('Funcao de formatacao de mensagem', () => {

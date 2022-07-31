@@ -1,4 +1,4 @@
-import { Spreadsheet } from './model'
+import { Spreadsheet } from '../../src/sheets/model'
 
 // Planilha usada para os testes
 // --------------------

@@ -7,8 +7,10 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "test": "jest",
-    "test-watch": "jest --watch --coverage"
+    "test": "jest --rootDir=tests/src",
+    "testw": "jest --rootDir=tests/src --watch --coverage",
+    "test-model": "jest --rootDir=tests/GoogleSheetAPI",
+    "testw-model": "jest --rootDir=tests/GoogleSheetAPI --watch --coverage"
   },
   "dependencies": {
     "axios": "^0.27.2",
