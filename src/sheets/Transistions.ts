@@ -2,60 +2,89 @@ import { Spreadsheet } from './model'
 
 Spreadsheet.setup()
 
+export interface ITransition {
+  value: number
+  when: Date
+  id?: string
+}
+
 export class TransitionsSheet {
   private sheetName = 'Transacoes'
   private spreadsheet: Spreadsheet = Spreadsheet.getInstance()
 
-  async getLastId(): Promise<number> {
-    const rangeIds = this.sheetName + '!A1:A99'
-    const listIds = await this.spreadsheet.get(rangeIds, {})
+  private async getLastId(): Promise<string | number> {
+    const lastRow = await this.spreadsheet.getLastRow(this.sheetName)
 
-    if (listIds.data.values) {
-      if (listIds.data.values.length) {
-        return listIds.data.values.at(-1)[0] || 0
-      }
-    }
-
-    return 0
-  }
-
-  async getRowWithId(id: string): Promise<number | undefined> {
-    const rangeIds = this.sheetName + '!A1:A99'
-    const listIds = await this.spreadsheet.get(rangeIds, {})
-
-    const values = listIds.data.values
-
-    if (values) {
-      if (Array.isArray(values)) {
-        const index = values.findIndex(cel => cel[0] == id)
-        if (index !== -1) {
-          return index + 1
-        }
-      }
+    if (lastRow !== undefined) {
+      return lastRow.at(0)! // o ! serve para o compilador do TypeScript deixar de ser chato, já que eu já lidei com o undefined
+    } else {
+      return 0
     }
   }
 
-  async appendNewLine(values: Array<string | number>) {
-    await this.spreadsheet.append(this.sheetName + '!A1:A199', {
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: [values],
-      },
-    })
+  private async getRowWithId(
+    id: string
+  ): Promise<Array<string | number> | undefined> {
+    const n_row = await this.spreadsheet.getNumberOfRowWithFirstColumnEqual(
+      id,
+      this.sheetName
+    )
+    if (n_row) {
+      return await this.spreadsheet.getRow(n_row, this.sheetName)
+    } else {
+      throw 'Linha passada nao encontrada'
+    }
   }
 
-  async updateTransition(id: string, values: Array<string | number>) {
-    const row = await this.getRowWithId(id)
+  private async getRowAndNumberRowWithId(
+    id: string
+  ): Promise<[Array<string | number>, number]> {
+    const n_row = await this.spreadsheet.getNumberOfRowWithFirstColumnEqual(
+      id,
+      this.sheetName
+    )
+    if (n_row) {
+      const row = await this.spreadsheet.getRow(n_row, this.sheetName)
+      if (row) {
+        return [row, n_row]
+      }
+    }
+    throw 'Linha passada nao encontrada'
+  }
 
-    if (!row) return null
+  async create({ value, when }: ITransition) {
+    const lastId = await this.getLastId()
+    await this.spreadsheet.appendNewRow(this.sheetName, [
+      lastId,
+      value,
+      when.toISOString(),
+    ])
+  }
 
-    const range = this.sheetName + '!A' + row + ':J' + row
-    console.log(range)
-    await this.spreadsheet.update(range, {
-      valueInputOption: 'RAW',
-      requestBody: {
-        values: [values],
-      },
-    })
+  async edit(id: string, { value, when }: ITransition) {
+    const [row, n_row] = await this.getRowAndNumberRowWithId(id)
+
+    if (row) {
+      row[1] = value
+      row[3] = when.toISOString()
+      await this.spreadsheet.updateRow(n_row, this.sheetName, row)
+    } else {
+      throw 'Linha passada nao encontrada'
+    }
+  }
+
+  async delete(id: string) {
+    const n_row =
+      (await this.spreadsheet.getNumberOfRowWithFirstColumnEqual(
+        id,
+        this.sheetName
+      )) || 0
+    const row = await this.spreadsheet.getRow(n_row, this.sheetName)
+    if (row) {
+      row[1] = 0
+      await this.spreadsheet.updateRow(n_row, this.sheetName, row)
+    } else {
+      throw 'Linha passada nao encontrada'
+    }
   }
 }
