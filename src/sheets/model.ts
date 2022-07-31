@@ -59,6 +59,77 @@ class Spreadsheet {
     const model = Spreadsheet.instance.sheet
     return model.append({ spreadsheetId, range, ...optins })
   }
+
+  async appendNewRow(sheetName: string, values: Array<string | number>) {
+    await this.append(sheetName, {
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [values],
+      },
+    })
+  }
+
+  async getLastRow(
+    sheetName: string
+  ): Promise<Array<string | number> | undefined> {
+    const rangeIds = sheetName + '!A1:J99'
+    const listIds = await this.get(rangeIds, {})
+
+    if (listIds.data.values) {
+      if (listIds.data.values.length) {
+        return listIds.data.values.at(-1)
+      }
+    }
+  }
+
+  async getNumberOfRowWithFirstColumnEqual(
+    id: string,
+    sheetName: string
+  ): Promise<number | undefined> {
+    const rangeIds = sheetName + '!A1:A99'
+    const listIds = await this.get(rangeIds, {})
+
+    const values = listIds.data.values
+
+    if (values) {
+      if (Array.isArray(values)) {
+        const index = values.findIndex(cel => cel[0] == id)
+        if (index !== -1) {
+          return index + 1
+        }
+      }
+    }
+  }
+
+  async getRow(ind: number, sheetName: string): Promise<any[] | undefined> {
+    const rangeIds = sheetName + '!A1:J99'
+    const listIds = await this.get(rangeIds, {})
+
+    const values = listIds.data.values
+
+    if (values) {
+      if (Array.isArray(values)) {
+        return values[ind - 1] // Como o sheet começa com 1 nas colunas, retirase aqui para ajustar com o array do index
+      }
+    }
+  }
+
+  async updateRow(
+    rowNumber: number,
+    sheetName: string,
+    values: Array<string | number>
+  ) {
+    const range = sheetName + '!A' + rowNumber + ':J' + rowNumber
+    await this.update(range, {
+      valueInputOption: 'RAW',
+      requestBody: {
+        values: [values],
+      },
+    })
+  }
+  async clearRow(rowNumber: number, sheetName: string) {
+    await this.updateRow(rowNumber, sheetName, ['', '', '', '', '', '', '', ''])
+  }
 }
 
 export { Spreadsheet }
