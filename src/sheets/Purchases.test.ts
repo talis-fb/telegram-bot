@@ -1,9 +1,9 @@
 import { PurchaseSheet } from './Purchases'
 
-describe('Funcao de formatacao de mensagem', () => {
+describe('PURCHASE', () => {
   let purchase = new PurchaseSheet()
 
-  it('Split correto', () => {
+  it('Categorias', () => {
     purchase.addCategory('Compras')
     expect(purchase.getCategories()).toEqual(['Compras'])
 
@@ -17,5 +17,11 @@ describe('Funcao de formatacao de mensagem', () => {
       'Comida',
       'Aluguel',
     ])
+
+    purchase.deleteCategory('Vendas')
+    expect(purchase.getCategories()).toEqual(['Compras', 'Comida', 'Aluguel'])
+
+    purchase.deleteCategory('Vendas')
+    expect(purchase.getCategories()).toEqual(['Compras', 'Comida', 'Aluguel'])
   })
 })
