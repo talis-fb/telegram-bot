@@ -1,10 +1,5 @@
-import type { Context, NextFunction } from 'grammy'
-
-export type MyContext = Context & {
-  state: {
-    msgLines: [number, ...Array<string>]
-  }
-}
+import type { NextFunction } from 'grammy'
+import type { MyContext } from '../types'
 
 export const formatMessage = (message: string): [number, ...Array<string>] => {
   let lines: string[] = message

@@ -1,5 +1,6 @@
-import { Composer, InlineKeyboard } from 'grammy'
-import PurchaseMiddleware, { type MyContext } from '../middlewares/purchase'
+import { Composer } from 'grammy'
+import PurchaseMiddleware from '../middlewares/purchase'
+import type { MyContext } from '../types'
 import { PurchaseSheet } from '../sheets/Purchases'
 
 import { categoryMenu } from '../menus/categorySelect'
@@ -11,7 +12,6 @@ const sheet = new PurchaseSheet()
 
 bot.use(PurchaseMiddleware)
 bot.on('message:text', async ctx => {
-  console.log('compra enviada ' + ctx.state.msgLines)
   const dadesToSave: [number, ...Array<string>] = ctx.state.msgLines
 
   const purchase: INewPurchase = {
@@ -23,6 +23,20 @@ bot.on('message:text', async ctx => {
   }
 
   await sheet.addPurchase(purchase)
+
+  ctx.reply('Foi', {
+    reply_markup: categoryMenu(),
+  })
 })
+
+bot.callbackQuery('categoria', ctx => {
+  ctx.reply('Clicou no categoria')
+})
+
+bot.callbackQuery('venda', ctx => {
+  ctx.reply('Clicou no venda')
+})
+
+// bot.on('message:entities:underline')
 
 export default bot
