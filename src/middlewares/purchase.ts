@@ -1,4 +1,10 @@
-import type { Context } from 'telegraf'
+import type { Context, NextFunction } from 'grammy'
+
+export type MyContext = Context & {
+  state: {
+    msgLines: [number, ...Array<string>]
+  }
+}
 
 export const formatMessage = (message: string): [number, ...Array<string>] => {
   let lines: string[] = message
@@ -16,16 +22,20 @@ export const formatMessage = (message: string): [number, ...Array<string>] => {
   return [value, ...lines]
 }
 
-export default (ctx: Context, next: () => Promise<void>) => {
-  if (ctx.message) {
-    const message: string = (ctx.message as any).text
-    if (message) {
-      try {
-        ctx.state.linesMsg = formatMessage(message)
-      } catch (e) {
-        return ctx.reply(e as string)
-      }
+export default async (ctx: MyContext, next: NextFunction) => {
+  const message = ctx.message
+  try {
+    if (!message || !message.text) {
+      throw 'Sem valores passados'
     }
+    ctx.state = {
+      msgLines: formatMessage(message.text),
+    }
+  } catch (err) {
+    return ctx.reply(err as string)
   }
-  return next()
+
+  await next()
 }
+
+export {}

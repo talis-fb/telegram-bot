@@ -17,7 +17,7 @@
     "dotenv": "^16.0.1",
     "google-auth-library": "^8.0.2",
     "googleapis": "^100.0.0",
-    "telegraf": "^4.8.3"
+    "grammy": "^1.10.0"
   },
   "devDependencies": {
     "@types/jest": "^28.1.6",

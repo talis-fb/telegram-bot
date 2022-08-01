@@ -1,7 +1,8 @@
 import PurchaseMiddleware, {
   formatMessage,
+  type MyContext,
 } from '../../../src/middlewares/purchase'
-import type { Context, MiddlewareFn } from 'telegraf'
+import type { Context } from 'grammy'
 
 describe('Funcao de formatacao de mensagem', () => {
   it('Split correto', () => {
@@ -25,7 +26,7 @@ describe('Funcao de formatacao de mensagem', () => {
 })
 
 describe('Middleware', () => {
-  interface IContextTest extends Omit<Partial<Context>, 'message'> {
+  interface IContextTest extends Omit<Partial<MyContext>, 'message'> {
     message: {
       text: string
     }
@@ -40,9 +41,9 @@ describe('Middleware', () => {
       state: {},
     }
 
-    expect(() => PurchaseMiddleware(ctx as Context, nextFn)).not.toThrow()
+    expect(() => PurchaseMiddleware(ctx as MyContext, nextFn)).not.toThrow()
     expect(ctx.state).toBeTruthy()
-    expect(formatMessage(ctx.message.text)).toEqual(ctx.state.linesMsg)
+    expect(formatMessage(ctx.message.text)).toEqual(ctx.state.msgLines)
     expect(nextFn).toHaveBeenCalled()
   })
 
@@ -56,7 +57,7 @@ describe('Middleware', () => {
     }
     const nextFn = jest.fn()
 
-    expect(() => PurchaseMiddleware(ctx as Context, nextFn)).not.toThrow()
+    expect(() => PurchaseMiddleware(ctx as MyContext, nextFn)).not.toThrow()
     expect(ctx.reply).toHaveBeenCalled()
     expect(nextFn).not.toHaveBeenCalled()
   })
