@@ -1,8 +1,7 @@
 import PurchaseMiddleware, {
   formatMessage,
-  type MyContext,
-} from '../../../src/middlewares/purchase'
-import type { Context } from 'grammy'
+} from '../../../src/middlewares/purchaseFormatter'
+import type { MyContext } from '../../../src/types'
 
 describe('Funcao de formatacao de mensagem', () => {
   it('Split correto', () => {

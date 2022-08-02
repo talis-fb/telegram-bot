@@ -1,4 +1,4 @@
-import { Spreadsheet } from './model'
+import { Spreadsheet } from '../Spreadsheet'
 
 Spreadsheet.setup()
 

@@ -1,7 +1,7 @@
 import { Composer } from 'grammy'
-import PurchaseMiddleware from '../middlewares/purchase'
+import PurchaseFormatterMiddleware from '../middlewares/purchaseFormatter'
 import type { MyContext } from '../types'
-import { PurchaseSheet } from '../sheets/Purchases'
+import { PurchaseSheet } from '../model/sheets/Purchases'
 
 import { categoryMenu } from '../menus/categorySelect'
 
@@ -9,7 +9,7 @@ import type { INewPurchase } from '../types'
 
 const bot = new Composer<MyContext>()
 
-bot.use(PurchaseMiddleware)
+bot.use(PurchaseFormatterMiddleware)
 bot.on('message:text', async ctx => {
   const dadesToSave: [number, ...Array<string>] = ctx.state.msgLines
 

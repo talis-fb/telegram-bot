@@ -1,5 +1,5 @@
 import { Composer } from 'grammy'
-import { PurchaseSheet } from '../sheets/Purchases'
+import { PurchaseSheet } from '../model/sheets/Purchases'
 import type { MyContext } from '../types'
 
 const bot = new Composer<MyContext>()

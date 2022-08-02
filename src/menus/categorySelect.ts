@@ -1,5 +1,5 @@
 import { InlineKeyboard } from 'grammy'
-import { PurchaseSheet } from '../sheets/Purchases'
+import { PurchaseSheet } from '../model/sheets/Purchases'
 
 export function categoryMenu() {
   const categories = new PurchaseSheet().getCategories()

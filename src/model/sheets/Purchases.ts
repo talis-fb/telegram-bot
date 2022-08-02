@@ -1,6 +1,6 @@
-import { Spreadsheet } from './model'
+import { Spreadsheet } from '../Spreadsheet'
 import { TransitionsSheet } from './Transistions'
-import type { INewPurchase } from '../types'
+import type { INewPurchase } from '../../types'
 
 Spreadsheet.setup()
 
