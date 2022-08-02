@@ -5,11 +5,34 @@ import { PurchaseSheet } from '../sheets/Purchases'
 
 import { categoryMenu } from '../menus/categorySelect'
 
-import type { INewPurchase } from '../sheets/Purchases'
+import type { INewPurchase } from '../types'
 
 const bot = new Composer<MyContext>()
 const sheet = new PurchaseSheet()
 
+bot.callbackQuery(/category-*/, async (ctx, next) => {
+  if (!ctx.session.purchase.dades) {
+    return ctx.reply('Envie um valor')
+  }
+
+  const category = ctx.update.callback_query.data.replace('category-', '')
+
+  ctx.session.purchase.category = category
+  ctx.session.purchase.dades.category = category
+
+  await next()
+})
+
+bot.use(async (ctx, next) => {
+  const { category, dades } = ctx.session.purchase
+  if (category && dades) {
+    await sheet.addPurchase(dades)
+    ctx.session.purchase = { dades: null, category: null, payment: null }
+    return ctx.reply('COMPRA REGISTRADA')
+  }
+
+  await next()
+})
 bot.use(PurchaseMiddleware)
 bot.on('message:text', async ctx => {
   const dadesToSave: [number, ...Array<string>] = ctx.state.msgLines
@@ -22,21 +45,11 @@ bot.on('message:text', async ctx => {
     who: ctx.from.first_name,
   }
 
-  await sheet.addPurchase(purchase)
+  ctx.session.purchase.dades = purchase
 
-  ctx.reply('Foi', {
+  ctx.reply('Selecione', {
     reply_markup: categoryMenu(),
   })
 })
-
-bot.callbackQuery('categoria', ctx => {
-  ctx.reply('Clicou no categoria')
-})
-
-bot.callbackQuery('venda', ctx => {
-  ctx.reply('Clicou no venda')
-})
-
-// bot.on('message:entities:underline')
 
 export default bot

@@ -1,16 +1,8 @@
 import { Spreadsheet } from './model'
 import { TransitionsSheet } from './Transistions'
+import type { INewPurchase } from '../types'
 
 Spreadsheet.setup()
-
-export interface INewPurchase {
-  value: number
-  when?: Date
-  category?: string
-  who?: string
-  where?: string
-  details?: string
-}
 
 type IPurchase = INewPurchase & {
   id: string

@@ -7,7 +7,7 @@ export function categoryMenu() {
   const menu = new InlineKeyboard()
 
   categories.forEach(category => {
-    menu.text(category, category).row()
+    menu.text(category, 'category-' + category).row()
   })
 
   return menu
