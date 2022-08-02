@@ -1,11 +1,7 @@
 import { Composer } from 'grammy'
-import PurchaseFormatterMiddleware from '../middlewares/purchaseFormatter'
-import type { MyContext } from '../types'
-import { PurchaseSheet } from '../model/sheets/Purchases'
-
-import { categoryMenu } from '../menus/categorySelect'
-
-import type { INewPurchase } from '../types'
+import PurchaseFormatterMiddleware from '../../../middlewares/purchaseFormatter'
+import type { MyContext, INewPurchase } from '../../../types'
+import { categoryMenu } from '../../../menus/categorySelect'
 
 const bot = new Composer<MyContext>()
 
