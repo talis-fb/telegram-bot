@@ -6,6 +6,7 @@
   "author": "talis-fb <talisonf11@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "test": "jest --rootDir=tests/src",
     "testw": "jest --rootDir=tests/src --watch --coverage",
