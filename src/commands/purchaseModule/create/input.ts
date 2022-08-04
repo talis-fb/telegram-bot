@@ -19,7 +19,7 @@ bot.on('message:text', async ctx => {
 
   ctx.session.purchase.dades = purchase
 
-  ctx.reply('Selecione', {
+  ctx.reply('Selecione a categoria da sua compra :)', {
     reply_markup: categoryMenu(),
   })
 })

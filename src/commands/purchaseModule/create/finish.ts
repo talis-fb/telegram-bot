@@ -13,7 +13,7 @@ const finish = async (ctx: MyContext, next: NextFunction) => {
   if (category && dades) {
     await sheet.addPurchase(dades)
     ctx.session.purchase = { dades: null, category: null, payment: null }
-    return ctx.reply('COMPRA REGISTRADA')
+    return ctx.reply('✅ COMPRA REGISTRADA')
   }
 
   await next()

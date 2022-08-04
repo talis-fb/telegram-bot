@@ -10,7 +10,9 @@ const categoryFilter = (ctx: MyContext): boolean => {
 
 bot.callbackQuery(/category-*/, async (ctx: MyContext, next) => {
   if (!categoryFilter(ctx)) {
-    return ctx.reply('Envie um valor')
+    return ctx.reply(
+      `❌ Envie um valor para poder clicar em uma categoria.\nSe precisar de ajudar digite o comando /help`
+    )
   }
 
   const category = ctx.update.callback_query!.data!.replace('category-', '')
