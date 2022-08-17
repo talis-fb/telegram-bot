@@ -6,8 +6,10 @@
   "author": "talis-fb <talisonf11@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "postinstall": "npm run build",
     "test": "jest --rootDir=tests/src",
     "testw": "jest --rootDir=tests/src --watch --coverage",
     "test-model": "jest --rootDir=tests/GoogleSheetAPI",
